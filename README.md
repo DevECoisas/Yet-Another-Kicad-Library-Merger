@@ -105,7 +105,7 @@ Type=Application
 Categories=Utility;
 ```
 
-- Place your icon (PNG or SVG) in `AppDir/usr/share/icons/`.
+- Place your icon (PNG or SVG) in `AppDir/icon.png`.
 
 ---
 
