@@ -71,9 +71,7 @@ AppImage requires a specific directory structure:
 AppDir/
 ├── AppRun
 ├── your_script         # PyInstaller executable
-├── usr/
-│   └── share/
-│       └── icons/
+├── icon.png
 └── your_script.desktop
 ```
 
