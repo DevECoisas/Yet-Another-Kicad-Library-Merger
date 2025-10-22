@@ -1,0 +1,98 @@
+HOW TO COMPILE YOUR PYTHON TKINTER SCRIPT INTO A LINUX APPIMAGE
+===============================================================
+
+Requirements:
+-------------
+- Python 3
+- pip
+- wget (for downloading appimagetool)
+- Linux environment
+
+Steps:
+------
+
+1. Install required tools
+-------------------------
+Install PyInstaller to bundle your Python script into a single executable:
+
+    pip install pyinstaller
+
+Download the AppImage creation tool:
+
+    wget "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage"
+    chmod +x appimagetool-x86_64.AppImage
+
+2. Use PyInstaller to create a Linux executable
+-----------------------------------------------
+From your script’s directory, run:
+
+    pyinstaller --onefile --windowed your_script.py
+
+Options explained:
+- --onefile → bundles everything into a single executable
+- --windowed → hides terminal for GUI apps
+
+After this, your executable will be in:
+
+    dist/your_script
+
+Test it:
+
+    ./dist/your_script
+
+If the GUI works, proceed to AppImage creation.
+
+3. Create an AppDir structure
+-----------------------------
+AppImage expects a directory with the following structure:
+
+    AppDir/
+    ├── AppRun
+    ├── your_script  (the PyInstaller executable)
+    ├── icon.png
+    └── your_script.desktop
+
+Create `AppRun` as a shell script to launch your executable:
+
+    #!/bin/bash
+    HERE="$(dirname "$(readlink -f "${0}")")"
+    "$HERE/your_script"
+
+Make it executable:
+
+    chmod +x AppDir/AppRun
+
+4. Create a .desktop file
+-------------------------
+Example: `AppDir/your_script.desktop`
+
+    [Desktop Entry]
+    Name=KiCad Library Merger
+    Comment=Merge KiCad libraries easily
+    Exec=your_script
+    Icon=icon
+    Type=Application
+    Categories=Utility;
+
+- Place your icon (PNG or SVG) inside `AppDir/usr/share/icons/`.
+
+5. Build the AppImage
+---------------------
+Run:
+
+    ./appimagetool-x86_64.AppImage AppDir
+
+It will produce an AppImage file like:
+
+    KiCad_Library_Merger-x86_64.AppImage
+
+Double-click it to run your app on Linux.
+
+Optional Tips:
+--------------
+- Test on a clean Linux VM to ensure all dependencies are included.
+- PyInstaller bundles Python, so users do not need Python installed.
+- Customize the icon and desktop entry as needed.
+
+
+Made fully on ChatGPT (this .txt file, obviously)
